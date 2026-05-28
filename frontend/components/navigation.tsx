@@ -8,6 +8,7 @@ import { AnimatedButton } from "./ui-custom";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const showAdmin = process.env.NEXT_PUBLIC_ENABLE_ADMIN === "true";
 
   return (
     <motion.nav
@@ -29,16 +30,18 @@ export function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
             <Link
-              href="/buscar"
+              href="/"
               className="text-muted-foreground hover:text-foreground transition-colors text-sm"
             >
               Consultar Certificado
             </Link>
-            <Link href="/admin">
-              <AnimatedButton variant="primary" className="text-sm px-4 py-2">
-                Panel Admin
-              </AnimatedButton>
-            </Link>
+            {showAdmin && (
+              <Link href="/admin">
+                <AnimatedButton variant="primary" className="text-sm px-4 py-2">
+                  Panel local
+                </AnimatedButton>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -61,17 +64,19 @@ export function Navbar() {
           >
             <div className="flex flex-col gap-4">
               <Link
-                href="/buscar"
+                href="/"
                 className="text-muted-foreground hover:text-foreground transition-colors text-sm py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Consultar Certificado
               </Link>
-              <Link href="/admin" onClick={() => setMobileMenuOpen(false)}>
-                <AnimatedButton variant="primary" className="w-full text-sm">
-                  Panel Admin
-                </AnimatedButton>
-              </Link>
+              {showAdmin && (
+                <Link href="/admin" onClick={() => setMobileMenuOpen(false)}>
+                  <AnimatedButton variant="primary" className="w-full text-sm">
+                    Panel local
+                  </AnimatedButton>
+                </Link>
+              )}
             </div>
           </motion.div>
         )}
@@ -91,8 +96,7 @@ export function Footer() {
               <span className="font-semibold text-foreground">CertGen</span>
             </Link>
             <p className="text-muted-foreground text-sm max-w-md">
-              Genera certificados de participación de forma automática y profesional.
-              Simplifica tu flujo de trabajo con nuestra plataforma inteligente.
+              Consulta y descarga certificados emitidos por la organizacion de forma rapida y segura.
             </p>
           </div>
           
@@ -100,12 +104,7 @@ export function Footer() {
             <h4 className="font-medium text-foreground mb-4 text-sm">Plataforma</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/admin" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
-                  Generar Certificados
-                </Link>
-              </li>
-              <li>
-                <Link href="/buscar" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
+                <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
                   Buscar Certificado
                 </Link>
               </li>
