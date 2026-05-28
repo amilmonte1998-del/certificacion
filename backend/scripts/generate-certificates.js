@@ -1,3 +1,5 @@
+require("dotenv/config");
+
 const path = require("path");
 
 const { generateCertificates } = require("../src/certificate-service");

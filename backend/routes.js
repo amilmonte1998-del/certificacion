@@ -4,8 +4,8 @@ const multer = require("multer");
 const path = require("path");
 
 const {
-  CERTIFICATES_DIR,
   TEMP_DIR,
+  createCertificateDownloadUrl,
   createBatchZip,
   ensureStorage,
   generateCertificates,
@@ -118,13 +118,8 @@ router.get("/certificados/:id/descargar", async (req, res) => {
       return res.status(404).json({ message: "Certificado no encontrado." });
     }
 
-    const absolutePath = path.resolve(CERTIFICATES_DIR, certificate.fileName);
-
-    if (!absolutePath.startsWith(CERTIFICATES_DIR) || !fs.existsSync(absolutePath)) {
-      return res.status(404).json({ message: "El archivo PDF no existe en el servidor." });
-    }
-
-    res.download(absolutePath, certificate.fileName);
+    const downloadUrl = await createCertificateDownloadUrl(certificate);
+    res.redirect(downloadUrl);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "No fue posible descargar el certificado." });

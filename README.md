@@ -1,14 +1,28 @@
 # CertGen
 
-Sistema para generar certificados PDF de forma local desde Excel + plantilla HTML y publicar solo la consulta por documento.
+Sistema para generar certificados PDF desde Excel + plantilla HTML y publicar una consulta por documento.
 
-## Backend local
+La arquitectura queda asi:
+
+```text
+Excel + plantilla HTML
+  -> Backend genera PDF temporal
+  -> Cloudflare R2 guarda el PDF
+  -> Supabase Postgres guarda el indice
+  -> Frontend consulta por documento
+  -> Backend entrega una URL firmada de descarga
+```
+
+## Backend
 
 ```bash
 cd backend
 npm install
+Copy-Item .env.example .env
 npm run dev
 ```
+
+Antes de generar certificados, configura `backend/.env` con Supabase y Cloudflare R2. El SQL para Supabase esta en [backend/supabase/schema.sql](backend/supabase/schema.sql).
 
 Genera certificados por API o por consola:
 
@@ -16,10 +30,10 @@ Genera certificados por API o por consola:
 npm run generate -- --excel ./datos.xlsx --template ./templates/certificado-ejemplo.html
 ```
 
-Los PDFs se guardan en `backend/storage/certificados` con nombres como:
+Los PDFs no quedan guardados en el repo: se suben a R2 con llaves como:
 
 ```text
-12345678-nombre-del-curso-a1b2c3d4.pdf
+certificados/12345678/lote-id/12345678-nombre-del-curso-a1b2c3d4.pdf
 ```
 
 ## Frontend publico

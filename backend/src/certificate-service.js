@@ -6,16 +6,13 @@ const path = require("path");
 const puppeteer = require("puppeteer");
 const readXlsxFile = require("read-excel-file/node");
 
+const repository = require("./supabase-repository");
+const r2Storage = require("./r2-storage");
+
 const ROOT_DIR = path.resolve(__dirname, "..");
 const STORAGE_DIR = path.join(ROOT_DIR, "storage");
 const TEMP_DIR = path.join(STORAGE_DIR, "uploads");
-const CERTIFICATES_DIR = path.join(STORAGE_DIR, "certificados");
-const DATABASE_PATH = path.join(STORAGE_DIR, "certificates.json");
-
-const DEFAULT_DATABASE = {
-  certificates: [],
-  batches: [],
-};
+const GENERATED_TEMP_DIR = path.join(STORAGE_DIR, "generated");
 
 const FIELD_ALIASES = {
   name: [
@@ -55,35 +52,7 @@ const FIELD_ALIASES = {
 
 function ensureStorage() {
   fs.mkdirSync(TEMP_DIR, { recursive: true });
-  fs.mkdirSync(CERTIFICATES_DIR, { recursive: true });
-
-  if (!fs.existsSync(DATABASE_PATH)) {
-    fs.writeFileSync(DATABASE_PATH, JSON.stringify(DEFAULT_DATABASE, null, 2));
-  }
-}
-
-async function readDatabase() {
-  ensureStorage();
-
-  try {
-    const content = await fs.promises.readFile(DATABASE_PATH, "utf8");
-    const database = JSON.parse(content);
-
-    return {
-      certificates: Array.isArray(database.certificates) ? database.certificates : [],
-      batches: Array.isArray(database.batches) ? database.batches : [],
-    };
-  } catch (error) {
-    return { ...DEFAULT_DATABASE };
-  }
-}
-
-async function writeDatabase(database) {
-  ensureStorage();
-
-  const tempPath = `${DATABASE_PATH}.tmp`;
-  await fs.promises.writeFile(tempPath, JSON.stringify(database, null, 2), "utf8");
-  await fs.promises.rename(tempPath, DATABASE_PATH);
+  fs.mkdirSync(GENERATED_TEMP_DIR, { recursive: true });
 }
 
 function normalizeKey(value) {
@@ -351,6 +320,10 @@ function createPublicCertificate(certificate) {
   };
 }
 
+function createFileKey({ batchId, documentNormalized, fileName }) {
+  return `certificados/${documentNormalized}/${batchId}/${fileName}`;
+}
+
 async function generateCertificates({
   excelPath,
   excelOriginalName,
@@ -366,6 +339,16 @@ async function generateCertificates({
   const generated = [];
   const skipped = [];
   const errors = [];
+  const initialBatch = await repository.createBatch({
+    id: batchId,
+    createdAt,
+    excelOriginalName,
+    templateOriginalName,
+    totalRows: rows.length,
+    generatedCount: 0,
+    skippedCount: 0,
+    errorCount: 0,
+  });
 
   const browser = await puppeteer.launch({
     headless: true,
@@ -387,14 +370,24 @@ async function generateCertificates({
       const id = crypto.randomUUID();
       const shortId = id.slice(0, 8);
       const baseFileName = `${documentNormalized}-${slugify(course || "certificado")}-${shortId}.pdf`;
-      const outputPath = path.join(CERTIFICATES_DIR, baseFileName);
+      const outputPath = path.join(GENERATED_TEMP_DIR, baseFileName);
+      const fileKey = createFileKey({
+        batchId,
+        documentNormalized,
+        fileName: baseFileName,
+      });
       const context = createTemplateContext(row, id);
       const html = renderTemplate(template, context);
 
       try {
         await renderPdf({ browser, html, outputPath });
+        const uploaded = await r2Storage.uploadPdf({
+          filePath: outputPath,
+          key: fileKey,
+          fileName: baseFileName,
+        });
 
-        generated.push({
+        const certificate = await repository.insertCertificate({
           id,
           batchId,
           name,
@@ -404,39 +397,35 @@ async function generateCertificates({
           date,
           hours,
           fileName: baseFileName,
+          fileKey: uploaded.key,
+          fileSize: uploaded.size,
           createdAt,
           data: row.original,
         });
+
+        generated.push(certificate);
       } catch (error) {
         errors.push({
           rowNumber: row.rowNumber,
           document,
           reason: error.message,
         });
+      } finally {
+        await fs.promises.unlink(outputPath).catch(() => {});
       }
     }
   } finally {
     await browser.close();
   }
 
-  const database = await readDatabase();
-  const batch = {
-    id: batchId,
-    createdAt,
-    excelOriginalName,
-    templateOriginalName,
-    totalRows: rows.length,
+  const batch = await repository.updateBatchCounts(batchId, {
     generatedCount: generated.length,
     skippedCount: skipped.length,
     errorCount: errors.length,
-  };
-
-  database.certificates.push(...generated);
-  database.batches.push(batch);
-  await writeDatabase(database);
+  });
 
   return {
-    batch,
+    batch: batch || initialBatch,
     generated: generated.map(createPublicCertificate),
     skipped,
     errors,
@@ -446,27 +435,28 @@ async function generateCertificates({
 
 async function listCertificatesByDocument(document) {
   const normalized = normalizeDocument(document);
-  const database = await readDatabase();
+  const certificates = await repository.listCertificatesByDocument(normalized);
 
-  return database.certificates
-    .filter((certificate) => certificate.documentNormalized === normalized)
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .map(createPublicCertificate);
+  return certificates.map(createPublicCertificate);
 }
 
 async function getCertificateById(id) {
-  const database = await readDatabase();
-  return database.certificates.find((certificate) => certificate.id === id) || null;
+  return repository.getCertificateById(id);
 }
 
 async function getBatchById(id) {
-  const database = await readDatabase();
-  return database.batches.find((batch) => batch.id === id) || null;
+  return repository.getBatchById(id);
+}
+
+async function createCertificateDownloadUrl(certificate) {
+  return r2Storage.createDownloadUrl({
+    key: certificate.fileKey,
+    fileName: certificate.fileName,
+  });
 }
 
 async function createBatchZip(batchId, outputStream) {
-  const database = await readDatabase();
-  const certificates = database.certificates.filter((certificate) => certificate.batchId === batchId);
+  const certificates = await repository.listCertificatesByBatch(batchId);
 
   if (!certificates.length) {
     throw new Error("El lote no contiene certificados para descargar.");
@@ -481,38 +471,24 @@ async function createBatchZip(batchId, outputStream) {
     outputStream.on("close", resolve);
     archive.pipe(outputStream);
 
-    certificates.forEach((certificate) => {
-      const absolutePath = path.join(CERTIFICATES_DIR, certificate.fileName);
-
-      if (fs.existsSync(absolutePath)) {
-        archive.file(absolutePath, { name: certificate.fileName });
-      }
-    });
-
-    archive.finalize().catch(reject);
+    Promise.all(
+      certificates.map(async (certificate) => {
+        const stream = await r2Storage.getObjectStream(certificate.fileKey);
+        archive.append(stream, { name: certificate.fileName });
+      })
+    )
+      .then(() => archive.finalize())
+      .catch(reject);
   });
 }
 
 async function getStats() {
-  const database = await readDatabase();
-  const documents = new Set(
-    database.certificates.map((certificate) => certificate.documentNormalized).filter(Boolean)
-  );
-  const lastBatch = [...database.batches].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  )[0];
-
-  return {
-    totalParticipants: documents.size,
-    generatedPdfs: database.certificates.length,
-    totalBatches: database.batches.length,
-    lastGeneration: lastBatch?.createdAt || null,
-  };
+  return repository.getStats();
 }
 
 module.exports = {
-  CERTIFICATES_DIR,
   TEMP_DIR,
+  createCertificateDownloadUrl,
   createBatchZip,
   ensureStorage,
   generateCertificates,
