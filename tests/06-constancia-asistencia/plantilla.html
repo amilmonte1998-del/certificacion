@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Constancia {{nombre}}</title>
+    <style>
+      @page {
+        size: letter portrait;
+        margin: 0;
+      }
+
+      body {
+        margin: 0;
+        width: 8.5in;
+        height: 11in;
+        background: #ffffff;
+        color: #222;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .page {
+        width: 8.5in;
+        height: 11in;
+        padding: 0.75in 0.8in;
+        border-top: 0.26in solid #2563eb;
+        border-bottom: 0.26in solid #0f766e;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 0.02in solid #d1d5db;
+        padding-bottom: 0.25in;
+      }
+
+      .brand {
+        font-size: 0.2in;
+        font-weight: 800;
+        color: #2563eb;
+      }
+
+      .date {
+        font-size: 0.14in;
+        color: #6b7280;
+      }
+
+      h1 {
+        margin: 0.72in 0 0.36in;
+        text-align: center;
+        font-size: 0.38in;
+        letter-spacing: 0.04in;
+      }
+
+      .body {
+        font-size: 0.2in;
+        line-height: 1.7;
+        text-align: justify;
+      }
+
+      .name {
+        min-height: 0.42in;
+        display: inline-flex;
+        align-items: center;
+        max-width: 5.6in;
+        font-weight: 800;
+        color: #111827;
+      }
+
+      .signature {
+        margin-top: 1.1in;
+        width: 3.2in;
+        border-top: 0.02in solid #222;
+        padding-top: 0.08in;
+        font-size: 0.16in;
+      }
+
+      .code {
+        position: absolute;
+        bottom: 0.48in;
+        left: 0.8in;
+        right: 0.8in;
+        color: #6b7280;
+        font-size: 0.11in;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page">
+      <div class="header">
+        <div class="brand">CERTGEN</div>
+        <div class="date">{{fecha}}</div>
+      </div>
+
+      <h1>CONSTANCIA DE ASISTENCIA</h1>
+
+      <p class="body">
+        Se hace constar que <span class="name" data-fit-text data-min-size="16">{{nombre}}</span>,
+        identificado(a) con documento <strong>{{documento}}</strong>, asistio a
+        <strong>{{curso}}</strong>, con una duracion total de <strong>{{horas}}</strong> horas.
+      </p>
+
+      <p class="body">
+        La actividad fue orientada por <strong>{{instructor}}</strong> y se expide para los fines
+        que la persona interesada considere pertinentes.
+      </p>
+
+      <div class="signature">
+        Coordinacion academica<br />
+        CertGen
+      </div>
+
+      <div class="code">Codigo de verificacion: {{codigo_certificado}}</div>
+    </section>
+  </body>
+</html>

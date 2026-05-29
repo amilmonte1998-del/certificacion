@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Prueba nombres largos</title>
+    <style>
+      @page {
+        size: letter landscape;
+        margin: 0;
+      }
+
+      body {
+        margin: 0;
+        width: 11in;
+        height: 8.5in;
+        background: #f8fafc;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #111827;
+      }
+
+      .page {
+        width: 11in;
+        height: 8.5in;
+        display: grid;
+        grid-template-columns: 2.8in 1fr;
+      }
+
+      .side {
+        background: #0f172a;
+        color: #ffffff;
+        padding: 0.7in 0.42in;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .side h2 {
+        margin: 0;
+        font-size: 0.36in;
+      }
+
+      .side p {
+        margin: 0;
+        font-size: 0.15in;
+        line-height: 1.45;
+        color: #cbd5e1;
+      }
+
+      .main {
+        padding: 0.8in 0.72in;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .label {
+        font-size: 0.15in;
+        letter-spacing: 0.06in;
+        color: #64748b;
+        font-weight: 700;
+      }
+
+      .name {
+        width: 6.5in;
+        height: 1.12in;
+        margin: 0.16in 0 0.25in;
+        display: flex;
+        align-items: center;
+        border-bottom: 0.03in solid #0f172a;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.47in;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .course {
+        width: 6.4in;
+        min-height: 0.72in;
+        font-size: 0.28in;
+        color: #2563eb;
+        font-weight: 800;
+      }
+
+      .meta {
+        margin-top: 0.42in;
+        display: flex;
+        gap: 0.5in;
+        font-size: 0.16in;
+      }
+
+      .meta strong {
+        display: block;
+        margin-top: 0.05in;
+        font-size: 0.22in;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page">
+      <aside class="side">
+        <h2>Prueba de ajuste</h2>
+        <p>
+          Esta plantilla sirve para comprobar que los nombres largos se reducen
+          antes de generar el PDF y no se montan sobre otros elementos.
+        </p>
+        <p>Codigo: {{codigo_certificado}}</p>
+      </aside>
+
+      <main class="main">
+        <div class="label">CERTIFICADO PARA</div>
+        <div class="name" data-fit-text data-min-size="21">{{nombre}}</div>
+        <div class="label">ACTIVIDAD</div>
+        <div class="course" data-fit-text data-min-size="18">{{curso}}</div>
+        <div class="meta">
+          <div>Documento<strong>{{documento}}</strong></div>
+          <div>Fecha<strong>{{fecha}}</strong></div>
+          <div>Horas<strong>{{horas}}</strong></div>
+        </div>
+      </main>
+    </section>
+  </body>
+</html>
