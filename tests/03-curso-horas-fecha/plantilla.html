@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Curso {{curso}}</title>
+    <style>
+      @page {
+        size: letter landscape;
+        margin: 0;
+      }
+
+      body {
+        margin: 0;
+        width: 11in;
+        height: 8.5in;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #111827;
+        color: #111827;
+      }
+
+      .page {
+        width: 11in;
+        height: 8.5in;
+        padding: 0.52in;
+        background:
+          linear-gradient(90deg, #111827 0 0.55in, transparent 0.55in),
+          linear-gradient(0deg, #14b8a6 0 0.2in, transparent 0.2in),
+          #e8eef5;
+      }
+
+      .card {
+        height: 100%;
+        background: white;
+        padding: 0.62in 0.8in;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        border-left: 0.14in solid #14b8a6;
+      }
+
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 0.5in;
+      }
+
+      .brand {
+        font-size: 0.16in;
+        letter-spacing: 0.05in;
+        color: #14b8a6;
+        font-weight: 800;
+      }
+
+      .date {
+        font-size: 0.15in;
+        color: #64748b;
+      }
+
+      h1 {
+        margin: 0.48in 0 0.18in;
+        font-size: 0.5in;
+      }
+
+      .label {
+        font-size: 0.18in;
+        color: #64748b;
+      }
+
+      .name {
+        width: 8.1in;
+        min-height: 0.62in;
+        margin-top: 0.16in;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.42in;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .course {
+        width: 8.2in;
+        min-height: 0.58in;
+        margin-top: 0.28in;
+        font-size: 0.28in;
+        font-weight: 800;
+        color: #0f766e;
+      }
+
+      .meta {
+        display: flex;
+        justify-content: space-between;
+        border-top: 0.02in solid #cbd5e1;
+        padding-top: 0.28in;
+        font-size: 0.16in;
+      }
+
+      .meta strong {
+        display: block;
+        font-size: 0.2in;
+        color: #111827;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page">
+      <div class="card">
+        <div class="top">
+          <div class="brand">ACADEMIA CERTGEN</div>
+          <div class="date">{{fecha}}</div>
+        </div>
+
+        <main>
+          <h1>Certificado de aprobacion</h1>
+          <div class="label">Otorgado a</div>
+          <div class="name" data-fit-text data-min-size="24">{{nombre}}</div>
+          <div class="label">Por completar satisfactoriamente</div>
+          <div class="course" data-fit-text data-min-size="18">{{curso}}</div>
+        </main>
+
+        <div class="meta">
+          <div>Documento<strong>{{documento}}</strong></div>
+          <div>Intensidad<strong>{{horas}} horas</strong></div>
+          <div>Codigo<strong>{{codigo_certificado}}</strong></div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

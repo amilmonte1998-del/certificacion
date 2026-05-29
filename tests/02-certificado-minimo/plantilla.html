@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Certificado {{nombre}}</title>
+    <style>
+      @page {
+        size: letter landscape;
+        margin: 0;
+      }
+
+      body {
+        margin: 0;
+        width: 11in;
+        height: 8.5in;
+        font-family: "Trebuchet MS", Arial, sans-serif;
+        color: #172033;
+        background: #f7fbff;
+      }
+
+      .page {
+        width: 11in;
+        height: 8.5in;
+        padding: 0.58in;
+        background:
+          linear-gradient(135deg, #0f766e 0 18%, transparent 18%),
+          linear-gradient(315deg, #2563eb 0 16%, transparent 16%),
+          #f7fbff;
+      }
+
+      .frame {
+        height: 100%;
+        border: 0.04in solid #0f766e;
+        background: rgba(255, 255, 255, 0.92);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 0.55in 0.9in;
+      }
+
+      .eyebrow {
+        margin: 0 0 0.22in;
+        font-size: 0.16in;
+        letter-spacing: 0.08in;
+        color: #0f766e;
+        font-weight: 700;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 0.58in;
+        letter-spacing: 0.04in;
+      }
+
+      .copy {
+        margin: 0.32in 0 0;
+        font-size: 0.22in;
+      }
+
+      .name {
+        width: 7.8in;
+        min-height: 0.8in;
+        margin: 0.2in 0 0.08in;
+        border-bottom: 0.02in solid #172033;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.44in;
+        font-weight: 700;
+        color: #2563eb;
+      }
+
+      .document {
+        font-size: 0.17in;
+        color: #475569;
+      }
+
+      .code {
+        margin-top: 0.38in;
+        font-size: 0.12in;
+        color: #64748b;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page">
+      <div class="frame">
+        <p class="eyebrow">CERTIFICADO DIGITAL</p>
+        <h1>Certificado</h1>
+        <p class="copy">Se certifica a:</p>
+        <div class="name" data-fit-text data-min-size="26">{{nombre}}</div>
+        <div class="document">Documento: {{documento}}</div>
+        <p class="code">Codigo de verificacion: {{codigo_certificado}}</p>
+      </div>
+    </section>
+  </body>
+</html>

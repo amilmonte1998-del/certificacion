@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reconocimiento {{nombre}}</title>
+    <style>
+      @page {
+        size: letter landscape;
+        margin: 0;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 11in;
+        height: 8.5in;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #050505;
+        background: #ffffff;
+      }
+
+      .page {
+        position: relative;
+        width: 11in;
+        height: 8.5in;
+        overflow: hidden;
+        background: #f4f5f7;
+      }
+
+      .left-red {
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 3.1in;
+        background: #f01817;
+      }
+
+      .right-blue {
+        position: absolute;
+        inset: 0 0 0 auto;
+        width: 2.45in;
+        background: linear-gradient(90deg, #23208b, #171172);
+      }
+
+      .circle-shadow,
+      .circle {
+        position: absolute;
+        border-radius: 50%;
+      }
+
+      .circle-shadow {
+        left: 0.68in;
+        top: -1.02in;
+        width: 9.95in;
+        height: 9.95in;
+        background: #dfdce0;
+      }
+
+      .circle {
+        left: 1.08in;
+        top: -0.93in;
+        width: 9.35in;
+        height: 9.35in;
+        background: #f4f5f7;
+        box-shadow: 0 0 0 0.22in rgba(40, 35, 139, 0.36);
+      }
+
+      .content {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        padding: 0.33in 1.2in 0.72in;
+        text-align: center;
+      }
+
+      .logo {
+        width: 1.35in;
+        height: 0.82in;
+        margin: 0 auto 0.18in;
+        position: relative;
+        color: #f01817;
+        font-weight: 900;
+        font-size: 0.16in;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 0.05in solid #26335f;
+        background: white;
+        clip-path: polygon(14% 0, 86% 0, 100% 55%, 72% 55%, 64% 100%, 36% 100%, 28% 55%, 0 55%);
+      }
+
+      .logo span {
+        margin-top: -0.08in;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 0.51in;
+        letter-spacing: 0.12in;
+        font-weight: 800;
+      }
+
+      .subtitle {
+        margin-top: 0.08in;
+        font-size: 0.22in;
+        letter-spacing: 0.08in;
+      }
+
+      .grant {
+        margin-top: 0.08in;
+        font-size: 0.15in;
+        letter-spacing: 0.06in;
+      }
+
+      .recipient {
+        width: 6.55in;
+        height: 0.72in;
+        margin: 0.55in auto 0.06in;
+        border-bottom: 0.03in solid #222;
+        display: flex;
+        align-items: end;
+        justify-content: center;
+        padding-bottom: 0.08in;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.34in;
+        font-weight: 700;
+      }
+
+      .document {
+        margin: 0.1in 0 0.16in;
+        font-size: 0.12in;
+        letter-spacing: 0.03in;
+      }
+
+      .message {
+        margin: 0 auto;
+        width: 6.95in;
+        font-size: 0.14in;
+        letter-spacing: 0.04in;
+        line-height: 1.55;
+      }
+
+      .signatures {
+        position: absolute;
+        left: 1.15in;
+        right: 1.15in;
+        bottom: 0.7in;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.55in;
+      }
+
+      .signature {
+        text-align: center;
+      }
+
+      .scribble {
+        height: 0.48in;
+        display: flex;
+        align-items: end;
+        justify-content: center;
+        color: #182238;
+        font-family: "Brush Script MT", "Segoe Script", cursive;
+        font-size: 0.42in;
+        transform: rotate(-5deg);
+        opacity: 0.9;
+      }
+
+      .line {
+        border-top: 0.02in solid #111;
+        padding-top: 0.02in;
+        font-size: 0.18in;
+        font-weight: 800;
+      }
+
+      .role {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.14in;
+        font-style: italic;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page">
+      <div class="left-red"></div>
+      <div class="right-blue"></div>
+      <div class="circle-shadow"></div>
+      <div class="circle"></div>
+
+      <main class="content">
+        <div class="logo"><span>GUARDAMETA</span></div>
+        <h1>RECONOCIMIENTO</h1>
+        <div class="subtitle">DE PARTICIPACION</div>
+        <div class="grant">SE OTORGA A:</div>
+
+        <div class="recipient" data-fit-text data-min-size="24">{{nombre}}</div>
+        <div class="document">DOCUMENTO: {{documento}}</div>
+
+        <p class="message">
+          POR SU DESTACADA PARTICIPACION, GRAN ESFUERZO, LIDERAZGO Y
+          ENTREGA DURANTE LA IV EDICION DE LA BATALLA DE ARQUEROS
+          GUARDAMETAS.
+        </p>
+
+        <div class="signatures">
+          <div class="signature">
+            <div class="scribble">Amilkar</div>
+            <div class="line">Edwin Amilkar Montero</div>
+            <div class="role">director administrativo</div>
+          </div>
+          <div class="signature">
+            <div class="scribble">Ramos</div>
+            <div class="line">Nelson Ramos</div>
+            <div class="role">entrenador invitado</div>
+          </div>
+          <div class="signature">
+            <div class="scribble">Paez</div>
+            <div class="line">Gean Carlos Paez</div>
+            <div class="role">director deportivo</div>
+          </div>
+        </div>
+      </main>
+    </section>
+  </body>
+</html>

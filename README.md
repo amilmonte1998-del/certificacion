@@ -36,6 +36,19 @@ Los PDFs no quedan guardados en el repo: se suben a R2 con llaves como:
 certificados/12345678/lote-id/12345678-nombre-del-curso-a1b2c3d4.pdf
 ```
 
+## Ejemplos de prueba
+
+En [tests](tests) hay varias carpetas con datos y plantillas HTML:
+
+- `01-reconocimiento-guardameta`: inspirado en el reconocimiento de la imagen, usa nombre y documento.
+- `02-certificado-minimo`: solo nombre y documento.
+- `03-curso-horas-fecha`: curso, fecha e intensidad horaria.
+- `04-evento-corporativo-columnas-extra`: columnas personalizadas como empresa, cargo y ciudad.
+- `05-taller-nombres-largos`: prueba de ajuste automatico para nombres largos.
+- `06-constancia-asistencia`: constancia en formato vertical.
+
+Cada ejemplo trae `datos.csv`, que puedes abrir con Excel y que el backend procesa directamente.
+
 ## Frontend publico
 
 ```bash

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reconocimiento corporativo {{nombre}}</title>
+    <style>
+      @page {
+        size: letter landscape;
+        margin: 0;
+      }
+
+      body {
+        margin: 0;
+        width: 11in;
+        height: 8.5in;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #1f2937;
+        background: #fff7ed;
+      }
+
+      .page {
+        width: 11in;
+        height: 8.5in;
+        padding: 0.55in;
+        background:
+          radial-gradient(circle at 14% 18%, rgba(15, 118, 110, 0.16), transparent 25%),
+          radial-gradient(circle at 92% 88%, rgba(249, 115, 22, 0.18), transparent 28%),
+          #fffaf4;
+      }
+
+      .panel {
+        height: 100%;
+        border: 0.02in solid #fed7aa;
+        padding: 0.58in 0.74in;
+        background: rgba(255, 255, 255, 0.82);
+      }
+
+      .brand {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #9a3412;
+        font-size: 0.15in;
+        font-weight: 800;
+        letter-spacing: 0.05in;
+      }
+
+      .mark {
+        width: 0.72in;
+        height: 0.72in;
+        border-radius: 50%;
+        background: conic-gradient(from 45deg, #f97316, #0f766e, #f97316);
+      }
+
+      h1 {
+        margin: 0.42in 0 0.18in;
+        font-size: 0.46in;
+        color: #7c2d12;
+      }
+
+      .event {
+        width: 7.9in;
+        min-height: 0.42in;
+        font-size: 0.25in;
+        font-weight: 800;
+        color: #0f766e;
+      }
+
+      .copy {
+        margin: 0.28in 0 0;
+        max-width: 7.8in;
+        font-size: 0.2in;
+        line-height: 1.5;
+      }
+
+      .name {
+        width: 7.8in;
+        min-height: 0.6in;
+        margin: 0.24in 0 0.05in;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.4in;
+        font-weight: 700;
+        color: #111827;
+      }
+
+      .meta {
+        margin-top: 0.36in;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.2in;
+        font-size: 0.14in;
+      }
+
+      .meta div {
+        border-top: 0.02in solid #fdba74;
+        padding-top: 0.08in;
+      }
+
+      .meta strong {
+        display: block;
+        margin-top: 0.04in;
+        font-size: 0.17in;
+        color: #111827;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page">
+      <div class="panel">
+        <div class="brand">
+          <span>CERTGEN CORPORATIVO</span>
+          <div class="mark"></div>
+        </div>
+
+        <h1>Reconocimiento especial</h1>
+        <div class="event" data-fit-text data-min-size="18">{{evento}}</div>
+
+        <p class="copy">Se otorga este reconocimiento a:</p>
+        <div class="name" data-fit-text data-min-size="24">{{nombre}}</div>
+        <p class="copy">
+          Por su participacion activa representando a <strong>{{nombre_empresa}}</strong>
+          desde el cargo de <strong>{{cargo}}</strong>.
+        </p>
+
+        <div class="meta">
+          <div>Documento<strong>{{documento}}</strong></div>
+          <div>Ciudad<strong>{{ciudad}}</strong></div>
+          <div>Fecha<strong>{{fecha}}</strong></div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
