@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import {
   AlertCircle,
   ArrowLeft,
@@ -158,9 +159,16 @@ export function CertificateSearch() {
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", delay: 0.1 }}
-                    className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10"
+                    className="relative mx-auto mb-6 h-20 w-20 overflow-hidden rounded-2xl border border-primary/30 bg-white shadow-2xl shadow-primary/20"
                   >
-                    <Search className="h-8 w-8 text-primary" />
+                    <Image
+                      src="/logo.jpg"
+                      alt="Logo de Certiva"
+                      fill
+                      sizes="80px"
+                      className="scale-[1.45] object-contain"
+                      priority
+                    />
                   </motion.div>
                   <h1 className="mb-3 text-3xl font-bold text-foreground sm:text-4xl">
                     Consultar Certificado
