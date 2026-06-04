@@ -1,11 +1,5 @@
 "use client";
 
-<<<<<<< HEAD
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-=======
->>>>>>> 48f20a8978bd39c67f533567afe29fd0f5f071c7
 import {
   AlertCircle,
   Award,
@@ -144,44 +138,11 @@ export function CertificateSearch() {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(17,17,17,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(17,17,17,0.035)_1px,transparent_1px)] bg-[size:52px_52px] pointer-events-none sm:bg-[size:72px_72px]" />
 
         <div className="relative z-10 mx-auto w-full max-w-3xl">
-<<<<<<< HEAD
-          <AnimatePresence mode="wait">
-            {showForm ? (
-              <motion.div
-                key="search-form"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-              >
-                <div className="mb-10 text-center">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", delay: 0.1 }}
-                    className="relative mx-auto mb-6 h-20 w-20 overflow-hidden rounded-2xl border border-primary/30 bg-white shadow-2xl shadow-primary/20"
-                  >
-                    <Image
-                      src="/logo.jpg"
-                      alt="Logo de Certiva"
-                      fill
-                      sizes="80px"
-                      className="scale-[1.45] object-contain"
-                      priority
-                    />
-                  </motion.div>
-                  <h1 className="mb-3 text-3xl font-bold text-foreground sm:text-4xl">
-                    Consultar Certificado
-                  </h1>
-                  <p className="mx-auto max-w-md text-muted-foreground">
-                    Ingresa tu numero de documento para buscar y descargar los certificados disponibles.
-                  </p>
-=======
           {!hasSearched && (
             <div>
               <div className="mb-7 text-center sm:mb-10">
                 <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/15 sm:mb-6 sm:h-16 sm:w-16">
                   <Search className="h-7 w-7 text-primary sm:h-8 sm:w-8" />
->>>>>>> 48f20a8978bd39c67f533567afe29fd0f5f071c7
                 </div>
                 <h1 className="mb-3 text-2xl font-bold leading-tight text-foreground sm:text-4xl">
                   Consulta de certificados
@@ -303,30 +264,43 @@ export function CertificateSearch() {
                           <div className="flex items-start gap-3 text-sm">
                             <Calendar className="h-4 w-4 shrink-0 text-primary" />
                             <span className="text-muted-foreground">Fecha:</span>
-                            <span className="min-w-0 break-words text-foreground">{certificate.date}</span>
+                            <span className="min-w-0 break-words text-foreground">
+                              {certificate.date}
+                            </span>
                           </div>
                         )}
                         {certificate.hours && (
                           <div className="flex items-start gap-3 text-sm">
                             <FileText className="h-4 w-4 shrink-0 text-primary" />
                             <span className="text-muted-foreground">Duracion:</span>
-                            <span className="min-w-0 break-words text-foreground">{certificate.hours} horas</span>
+                            <span className="min-w-0 break-words text-foreground">
+                              {certificate.hours} horas
+                            </span>
                           </div>
                         )}
                         <div className="flex items-start gap-3 text-sm">
                           <Calendar className="h-4 w-4 shrink-0 text-primary" />
                           <span className="text-muted-foreground">Generado:</span>
-                          <span className="min-w-0 break-words text-foreground">{formatDate(certificate.createdAt)}</span>
+                          <span className="min-w-0 break-words text-foreground">
+                            {formatDate(certificate.createdAt)}
+                          </span>
                         </div>
                       </div>
                     </div>
 
                     <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                      <DownloadLink href={apiUrl(certificate.downloadUrl)} className="flex-1 gap-2 py-4">
+                      <DownloadLink
+                        href={apiUrl(certificate.downloadUrl)}
+                        className="flex-1 gap-2 py-4"
+                      >
                         <Download className="h-5 w-5" />
                         Descargar PDF
                       </DownloadLink>
-                      <AnimatedButton variant="secondary" onClick={handleReset} className="flex-1 py-4">
+                      <AnimatedButton
+                        variant="secondary"
+                        onClick={handleReset}
+                        className="flex-1 py-4"
+                      >
                         Nueva busqueda
                       </AnimatedButton>
                     </div>
@@ -347,7 +321,10 @@ export function CertificateSearch() {
                 </h2>
                 <p className="mx-auto max-w-md text-muted-foreground">
                   No encontramos certificados asociados al documento{" "}
-                  <span className="break-words font-medium text-foreground">{documentNumber}</span>.
+                  <span className="break-words font-medium text-foreground">
+                    {documentNumber}
+                  </span>
+                  .
                 </p>
               </div>
 
@@ -378,7 +355,9 @@ export function CertificateSearch() {
               <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10 sm:h-16 sm:w-16">
                 <AlertCircle className="h-7 w-7 text-destructive sm:h-8 sm:w-8" />
               </div>
-              <h2 className="mb-2 text-xl font-bold text-foreground sm:text-2xl">No pudimos consultar</h2>
+              <h2 className="mb-2 text-xl font-bold text-foreground sm:text-2xl">
+                No pudimos consultar
+              </h2>
               <p className="mx-auto mb-6 max-w-md text-muted-foreground">{error}</p>
               <AnimatedButton variant="primary" onClick={handleReset}>
                 Volver a intentar

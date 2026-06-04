@@ -1,26 +1,9 @@
 import type { Metadata } from 'next'
-<<<<<<< HEAD
-import { Analytics } from '@vercel/analytics/next'
-import './globals.css'
-
-export const metadata: Metadata = {
-  title: 'Certiva - Consulta de Certificados',
-  description: 'Consulta y descarga certificados por numero de documento',
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/logo.jpg',
-        type: 'image/jpeg',
-      },
-    ],
-    apple: '/logo.jpg',
-=======
 import { Geist } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const geist = Geist({ subsets: ["latin"] });
+const geist = Geist({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Certiva | Consulta de certificados',
@@ -30,11 +13,10 @@ export const metadata: Metadata = {
     icon: [
       {
         url: '/icon.png',
-        type: 'image/jpeg',
+        type: 'image/png',
       },
     ],
-    apple: '/brand/logo.png',
->>>>>>> 48f20a8978bd39c67f533567afe29fd0f5f071c7
+    apple: '/icon.png',
   },
 }
 
