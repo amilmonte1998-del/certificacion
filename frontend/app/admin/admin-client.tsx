@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   AlertCircle,
   Calendar,
@@ -74,22 +73,18 @@ function FileUploadZone({
 
   return (
     <GlassCard hover={false} className="h-full">
-      <div className="mb-6 flex items-center gap-3">
+      <div className="mb-5 flex items-center gap-3 sm:mb-6">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
           <Icon className="h-5 w-5 text-primary" />
         </div>
-        <div>
+        <div className="min-w-0">
           <h3 className="font-semibold text-foreground">{title}</h3>
-          <p className="text-xs text-muted-foreground">{description}</p>
+          <p className="break-words text-xs text-muted-foreground">{description}</p>
         </div>
       </div>
 
       {file ? (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="relative rounded-xl border border-primary/30 bg-primary/5 p-4"
-        >
+        <div className="relative rounded-xl border border-primary/30 bg-primary/5 p-4">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
               <FileText className="h-6 w-6 text-primary" />
@@ -110,11 +105,9 @@ function FileUploadZone({
             <CheckCircle2 className="h-4 w-4" />
             <span>Archivo listo</span>
           </div>
-        </motion.div>
+        </div>
       ) : (
-        <motion.label
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
+        <label
           onDragEnter={(event) => {
             event.preventDefault();
             setIsDragging(true);
@@ -126,7 +119,7 @@ function FileUploadZone({
           onDragOver={(event) => event.preventDefault()}
           onDrop={handleDrop}
           className={cn(
-            "flex cursor-pointer flex-col items-center justify-center gap-4 rounded-xl border-2 border-dashed p-8 transition-all duration-300",
+            "flex cursor-pointer flex-col items-center justify-center gap-4 rounded-xl border-2 border-dashed p-6 transition-all duration-300 sm:p-8",
             isDragging
               ? "scale-[1.02] border-primary bg-primary/10"
               : "border-border/50 hover:border-primary/50 hover:bg-muted/30"
@@ -145,7 +138,7 @@ function FileUploadZone({
             <p className="text-sm font-medium text-foreground">Arrastra tu archivo aqui</p>
             <p className="mt-1 text-xs text-muted-foreground">o haz clic para seleccionar</p>
           </div>
-        </motion.label>
+        </label>
       )}
     </GlassCard>
   );
@@ -162,11 +155,11 @@ function StatCard({
 }) {
   return (
     <GlassCard className="flex items-center gap-4">
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-        <Icon className="h-6 w-6 text-primary" />
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 sm:h-12 sm:w-12">
+        <Icon className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
       </div>
-      <div>
-        <p className="text-2xl font-bold text-foreground">{value}</p>
+      <div className="min-w-0">
+        <p className="truncate text-xl font-bold text-foreground sm:text-2xl">{value}</p>
         <p className="text-xs text-muted-foreground">{label}</p>
       </div>
     </GlassCard>
@@ -259,47 +252,37 @@ export default function AdminClient() {
     <main className="min-h-screen">
       <Navbar />
 
-      <div className="relative overflow-hidden pb-16 pt-24">
+      <div className="relative overflow-hidden px-4 pb-12 pt-24 sm:pb-16">
         <FloatingGradient />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:52px_52px] pointer-events-none sm:bg-[size:64px_64px]" />
 
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-10"
-          >
-            <h1 className="mb-2 text-3xl font-bold text-foreground sm:text-4xl">
+        <div className="relative z-10 mx-auto max-w-7xl sm:px-2 lg:px-4">
+          <div className="mb-8 sm:mb-10">
+            <h1 className="mb-2 text-2xl font-bold leading-tight text-foreground sm:text-4xl">
               Panel local de generacion
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-sm leading-6 text-muted-foreground sm:text-base">
               Carga un Excel y una plantilla HTML para crear PDFs con texto real.
             </p>
-          </motion.div>
+          </div>
 
-          <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="mb-8 grid grid-cols-1 gap-3 sm:mb-10 sm:grid-cols-3 sm:gap-4">
             <StatCard icon={Users} label="Participantes" value={stats.totalParticipants} />
             <StatCard icon={FileText} label="PDFs generados" value={stats.generatedPdfs} />
             <StatCard icon={Calendar} label="Ultima generacion" value={formatDate(stats.lastGeneration)} />
           </div>
 
-          <AnimatePresence mode="wait">
             {result ? (
-              <motion.div
-                key="success"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-              >
-                <GlassCard hover={false} className="mx-auto max-w-3xl py-12 text-center">
-                  <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
-                    <CheckCircle2 className="h-10 w-10 text-primary" />
+              <div>
+                <GlassCard hover={false} className="mx-auto max-w-3xl py-10 text-center sm:py-12">
+                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 sm:h-20 sm:w-20">
+                    <CheckCircle2 className="h-8 w-8 text-primary sm:h-10 sm:w-10" />
                   </div>
 
-                  <h2 className="mb-2 text-2xl font-bold text-foreground">
+                  <h2 className="mb-2 text-xl font-bold text-foreground sm:text-2xl">
                     Certificados generados
                   </h2>
-                  <p className="mb-8 text-muted-foreground">
+                  <p className="mb-8 text-sm text-muted-foreground sm:text-base">
                     {result.batch.generatedCount} PDF de {result.batch.totalRows} filas procesadas.
                   </p>
 
@@ -316,29 +299,22 @@ export default function AdminClient() {
                   )}
 
                   <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                    <motion.a
+                    <a
                       href={apiUrl(result.downloadUrl)}
-                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 font-medium text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:bg-primary/90"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 font-medium text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 sm:w-auto"
                     >
                       <Download className="h-4 w-4" />
                       Descargar lote
-                    </motion.a>
+                    </a>
                     <AnimatedButton variant="secondary" onClick={resetGeneration}>
                       Generar otro lote
                     </AnimatedButton>
                   </div>
                 </GlassCard>
-              </motion.div>
+              </div>
             ) : (
-              <motion.div
-                key="upload"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-              >
-                <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <div>
+                <div className="mb-8 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
                   <FileUploadZone
                     accept=".xlsx,.csv"
                     icon={FileSpreadsheet}
@@ -369,7 +345,7 @@ export default function AdminClient() {
                     variant="primary"
                     onClick={handleGenerate}
                     disabled={isGenerating}
-                    className="flex items-center gap-3 px-10 py-4 text-base"
+                    className="flex w-full items-center justify-center gap-3 px-8 py-4 text-base sm:w-auto sm:px-10"
                   >
                     {isGenerating ? (
                       <>
@@ -384,9 +360,8 @@ export default function AdminClient() {
                     )}
                   </AnimatedButton>
                 </div>
-              </motion.div>
+              </div>
             )}
-          </AnimatePresence>
         </div>
       </div>
     </main>

@@ -40,6 +40,20 @@ const upload = multer({
   limits: {
     fileSize: 20 * 1024 * 1024,
   },
+  fileFilter: (req, file, cb) => {
+    const extension = path.extname(file.originalname).toLowerCase();
+    const validExtensions = {
+      excel: [".xlsx", ".csv"],
+      plantilla: [".html", ".htm"],
+    };
+
+    if (!validExtensions[file.fieldname]?.includes(extension)) {
+      cb(new Error("Tipo de archivo no permitido."));
+      return;
+    }
+
+    cb(null, true);
+  },
 });
 
 function removeUploadedFiles(files = {}) {

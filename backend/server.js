@@ -13,11 +13,18 @@ ensureStorage();
 
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map((origin) => origin.trim())
-  : true;
+  : ["http://localhost:3000", "http://127.0.0.1:3000"];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error("Origen no permitido por CORS."));
+    },
   })
 );
 app.use(express.json({ limit: "1mb" }));
@@ -28,6 +35,24 @@ app.get("/", (req, res) => {
   res.json({
     ok: true,
     message: "Servidor de certificados funcionando correctamente",
+  });
+});
+
+app.use((error, req, res, next) => {
+  if (res.headersSent) {
+    next(error);
+    return;
+  }
+
+  const statusCode =
+    error.message === "Origen no permitido por CORS." ||
+    error.message === "Tipo de archivo no permitido."
+      ? 400
+      : 500;
+
+  console.error(error.message || error);
+  res.status(statusCode).json({
+    message: error.message || "Ocurrio un error inesperado.",
   });
 });
 
