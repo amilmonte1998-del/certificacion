@@ -1,9 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { FileText, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
+
 import { AnimatedButton } from "./ui-custom";
 
 export function Navbar() {
@@ -11,64 +12,55 @@ export function Navbar() {
   const showAdmin = process.env.NEXT_PUBLIC_ENABLE_ADMIN === "true";
 
   return (
-    <motion.nav
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl"
-    >
+    <nav className="fixed left-0 right-0 top-0 z-50 border-b border-border bg-background/90 backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full group-hover:bg-primary/30 transition-colors" />
-              <FileText className="relative h-8 w-8 text-primary" />
-            </div>
-            <span className="font-semibold text-lg text-foreground">CertGen</span>
+          <Link href="/" className="flex min-w-0 items-center">
+            <Image
+              src="/brand/logo-text.png"
+              alt="Certiva"
+              width={148}
+              height={44}
+              priority
+              sizes="(max-width: 640px) 128px, 148px"
+              className="h-9 w-auto max-w-[136px] object-contain sm:h-10 sm:max-w-[148px]"
+            />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden items-center gap-6 md:flex">
             <Link
               href="/"
-              className="text-muted-foreground hover:text-foreground transition-colors text-sm"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
-              Consultar Certificado
+              Consultar certificado
             </Link>
             {showAdmin && (
               <Link href="/admin">
-                <AnimatedButton variant="primary" className="text-sm px-4 py-2">
+                <AnimatedButton variant="primary" className="px-4 py-2 text-sm">
                   Panel local
                 </AnimatedButton>
               </Link>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+            className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground md:hidden"
+            onClick={() => setMobileMenuOpen((value) => !value)}
+            aria-label={mobileMenuOpen ? "Cerrar menu" : "Abrir menu"}
           >
             {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-border/50 py-4"
-          >
+          <div className="border-t border-border py-4 md:hidden">
             <div className="flex flex-col gap-4">
               <Link
                 href="/"
-                className="text-muted-foreground hover:text-foreground transition-colors text-sm py-2"
+                className="py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Consultar Certificado
+                Consultar certificado
               </Link>
               {showAdmin && (
                 <Link href="/admin" onClick={() => setMobileMenuOpen(false)}>
@@ -78,58 +70,62 @@ export function Navbar() {
                 </Link>
               )}
             </div>
-          </motion.div>
+          </div>
         )}
       </div>
-    </motion.nav>
+    </nav>
   );
 }
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/50 bg-card/30 backdrop-blur-sm">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="border-t border-border bg-card">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <div className="grid grid-cols-1 gap-7 text-center sm:text-left md:grid-cols-4">
           <div className="md:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <FileText className="h-6 w-6 text-primary" />
-              <span className="font-semibold text-foreground">CertGen</span>
+            <Link href="/" className="mb-4 inline-flex items-center">
+              <Image
+                src="/brand/logo-text.png"
+                alt="Certiva"
+                width={132}
+                height={40}
+                sizes="132px"
+                className="h-8 w-auto object-contain sm:h-9"
+              />
             </Link>
-            <p className="text-muted-foreground text-sm max-w-md">
-              Consulta y descarga certificados emitidos por la organizacion de forma rapida y segura.
+            <p className="mx-auto max-w-md text-sm text-muted-foreground sm:mx-0">
+              Consulta y descarga certificados digitales emitidos por la organizacion de forma
+              rapida y segura.
             </p>
           </div>
-          
+
           <div>
-            <h4 className="font-medium text-foreground mb-4 text-sm">Plataforma</h4>
+            <h4 className="mb-4 text-sm font-medium text-foreground">Plataforma</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
-                  Buscar Certificado
+                <Link
+                  href="/"
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  Buscar certificado
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-medium text-foreground mb-4 text-sm">Soporte</h4>
-            <ul className="space-y-2">
-              <li>
-                <span className="text-muted-foreground text-sm">Documentación</span>
-              </li>
-              <li>
-                <span className="text-muted-foreground text-sm">Contacto</span>
-              </li>
+            <h4 className="mb-4 text-sm font-medium text-foreground">Soporte</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>Documentacion</li>
+              <li>Contacto</li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-border/50 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-muted-foreground text-xs">
-            © {new Date().getFullYear()} CertGen. Todos los derechos reservados.
-          </p>
-          <div className="flex items-center gap-4 text-xs text-muted-foreground">
-            <span>Términos</span>
+        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 text-center text-xs text-muted-foreground sm:flex-row sm:pt-8 sm:text-left">
+          <p>Copyright {new Date().getFullYear()} Certiva. Todos los derechos reservados.</p>
+          <div className="flex items-center gap-4">
+            <span>Terminos</span>
             <span>Privacidad</span>
           </div>
         </div>

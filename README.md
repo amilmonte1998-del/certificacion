@@ -1,4 +1,4 @@
-# CertGen
+# Certiva
 
 Sistema para generar certificados PDF desde Excel + plantilla HTML y publicar una consulta por documento.
 
@@ -53,8 +53,8 @@ Cada ejemplo trae `datos.csv`, que puedes abrir con Excel y que el backend proce
 
 ```bash
 cd frontend
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 La pagina principal muestra solo la consulta por documento. Configura `NEXT_PUBLIC_API_URL` si el backend no corre en `http://localhost:3001`.
